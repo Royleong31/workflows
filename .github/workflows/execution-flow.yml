@@ -36,7 +36,7 @@ jobs:
         id: run-tests
         run: npm run test
       - name: Upload test report
-        if: failure() && steps.run-tests.outcome == 'failure'
+        if: failure() && steps.run-tests.outcome == 'failure' # need to have failure() in order for the condition to work as the entire step won't run if the previous step fails by default
         uses: actions/upload-artifact@v3
         with:
           name: test-report
@@ -75,3 +75,12 @@ jobs:
         run: ls
       - name: Deploy
         run: echo "Deploying..."
+  report:
+    runs-on: ubuntu-latest
+    needs: [build, lint] # need lint as well because build doesn't wait for lint to finish
+    if: failure()
+    steps:
+      - name: Output information
+        run: |
+          echo "This is a report"
+          echo "${{ github.event_name }}"
