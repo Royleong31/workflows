@@ -71,6 +71,15 @@ jobs:
     uses: ./.github/workflows/reusable.yml
     with:
       artifact-name: dist-files
+    # secrets:
+    #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  print-deploy-result:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output information
+        run: |
+          echo "The result of the deployment was ${{ needs.deploy.outputs.result }}"
   report:
     runs-on: ubuntu-latest
     needs: [build, lint] # need lint as well because build doesn't wait for lint to finish
