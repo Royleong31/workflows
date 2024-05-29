@@ -69,6 +69,8 @@ jobs:
   deploy:
     needs: build
     uses: ./.github/workflows/reusable.yml
+    with:
+      artifact-name: dist-files
   report:
     runs-on: ubuntu-latest
     needs: [build, lint] # need lint as well because build doesn't wait for lint to finish
